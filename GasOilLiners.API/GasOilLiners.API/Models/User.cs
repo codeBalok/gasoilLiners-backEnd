@@ -1,39 +1,40 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace GasOilLiners.API.Models
 {
-    public partial class EmployeeCategoryMaster
+    public class User : IdentityUser
     {
-        public EmployeeCategoryMaster()
-        {
-            EmployeeMaster = new HashSet<EmployeeMaster>();
-        }
-
-        [Key]
-        public int Id { get; set; }
         [Required]
-        [StringLength(30)]
-        public string Category { get; set; }
-        [StringLength(100)]
-        public string Description { get; set; }
+        [StringLength(50)]
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        [StringLength(50)]
+        public string LastName { get; set; }
+        public byte[] Photo { get; set; }
+
+        [StringLength(250)]
+        public string Remarks { get; set; }
         public int Status { get; set; }
         [Column(TypeName = "datetime")]
-        public DateTime? CreatedOn { get; set; }
-        public int? CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public int CreatedBy { get; set; }
+
         [Column("CreatedIP")]
         [StringLength(15)]
         public string CreatedIp { get; set; }
+
         [Column(TypeName = "datetime")]
         public DateTime? ModifiedOn { get; set; }
         public int? ModifiedBy { get; set; }
+
         [Column("ModifiedIP")]
         [StringLength(15)]
         public string ModifiedIp { get; set; }
-
-        [InverseProperty("CategoryNavigation")]
-        public virtual ICollection<EmployeeMaster> EmployeeMaster { get; set; }
     }
 }

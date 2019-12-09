@@ -5,24 +5,20 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace GasOilLiners.API.Models
 {
-    public partial class EmployeeCategoryMaster
+    public partial class EmployeeSalaryAdvance
     {
-        public EmployeeCategoryMaster()
-        {
-            EmployeeMaster = new HashSet<EmployeeMaster>();
-        }
-
         [Key]
         public int Id { get; set; }
-        [Required]
-        [StringLength(30)]
-        public string Category { get; set; }
-        [StringLength(100)]
-        public string Description { get; set; }
+        public int EmployeeId { get; set; }
+        [Column(TypeName = "decimal(18, 0)")]
+        public decimal AdvanceTaken { get; set; }
+        [StringLength(250)]
+        public string Remarks { get; set; }
         public int Status { get; set; }
         [Column(TypeName = "datetime")]
-        public DateTime? CreatedOn { get; set; }
-        public int? CreatedBy { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public int CreatedBy { get; set; }
+        [Required]
         [Column("CreatedIP")]
         [StringLength(15)]
         public string CreatedIp { get; set; }
@@ -33,7 +29,8 @@ namespace GasOilLiners.API.Models
         [StringLength(15)]
         public string ModifiedIp { get; set; }
 
-        [InverseProperty("CategoryNavigation")]
-        public virtual ICollection<EmployeeMaster> EmployeeMaster { get; set; }
+        [ForeignKey(nameof(EmployeeId))]
+        [InverseProperty(nameof(ProjectEmployee.EmployeeSalaryAdvance))]
+        public virtual ProjectEmployee Employee { get; set; }
     }
 }
