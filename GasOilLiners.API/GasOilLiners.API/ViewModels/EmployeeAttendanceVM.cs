@@ -21,7 +21,7 @@ namespace GasOilLiners.API.ViewModels
         public int Month1Count { get; set; }
         public int Month2Count { get; set; }
         public int Month3Count { get; set; }
-
+        public string TodayAttendance { get; set; }
 
     }
 }

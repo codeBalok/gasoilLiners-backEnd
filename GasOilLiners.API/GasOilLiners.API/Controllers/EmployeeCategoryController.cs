@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using GasOilLiners.API.Models;
+using GasOilLiners.API.ViewModels;
 
 namespace GasOilLiners.API.Controllers
 {
@@ -22,9 +23,26 @@ namespace GasOilLiners.API.Controllers
 
         // GET: api/EmployeeCategory
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<EmployeeCategoryMaster>>> GetEmployeeCategoryMaster()
+        public async Task<ActionResult<IEnumerable<EmployeeCategoryVM>>> GetEmployeeCategoryMaster()
         {
-            return await _context.EmployeeCategoryMaster.ToListAsync();
+            List<EmployeeCategoryVM> employeeCategoryVM = new List<EmployeeCategoryVM>();
+            var employeeCategories =  await _context.EmployeeCategoryMaster.Include(x=>x.EmployeeMaster).ToListAsync();
+            employeeCategories.ForEach(x => new EmployeeCategoryVM
+            {
+                Category = x.Category
+            });
+            foreach (EmployeeCategoryMaster empCat in employeeCategories)
+            {
+                employeeCategoryVM.Add(new EmployeeCategoryVM
+                {
+                    Category = empCat.Category, 
+                    Description = empCat.Description,
+                    EmployeeCount = empCat.EmployeeMaster.Count,
+                    Id = empCat.Id,
+                    Status = empCat.Status
+                });
+            }
+            return employeeCategoryVM;
         }
 
         // GET: api/EmployeeCategory/5
